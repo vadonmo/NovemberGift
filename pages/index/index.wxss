@@ -1,0 +1,57 @@
+/**index.wxss**/
+
+.container {
+  background-color: white;
+  padding: 0px;
+}
+
+.topView {
+  background-color: white;
+  width: 100%;
+  text-align: center;
+}
+
+.daily {
+  display: flex;
+  align-items: center;
+  height: 80rpx;
+  width: 100%;
+  background-color: white;
+  text-align: center;
+}
+
+.dailyDate {
+  text-align: left;
+  color: #4b4b4b;
+  font-size: 30rpx;
+}
+
+.dailyCond {
+  text-align: left;
+  color: #4b4b4b;
+  font-size: 30rpx;
+  margin-left: 10rpx;
+}
+
+.dailyTmp {
+  text-align: center;
+  font-size: 30rpx;
+}
+
+.lifeStyle {
+  margin: 40rpx;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  text-align: center;
+}
+.lifeText {
+  width: 100%;
+  text-align: center; 
+  font-size: 25rpx;
+  color: #4B4B4B;
+}
+.life {
+  width: 100%;
+  margin-top: 10rpx;
+}
