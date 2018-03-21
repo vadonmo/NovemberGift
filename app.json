@@ -4,10 +4,11 @@
     "pages/logs/logs"
   ],
   "window": {
-    "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#fff",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1080df",
     "navigationBarTitleText": "冬月的礼物",
-    "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "navigationBarTextStyle": "fff",
+    "enablePullDownRefresh": true,
+    "backgroundColor": "#1080df"
   }
 }

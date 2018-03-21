@@ -1,24 +1,15 @@
 <!--index.wxml-->
-<wxs module="m1">
-  var getDailyDate = function(index, str) {
-    if (index == 0) {
-      return "今天";
-    } else {
-      return str.split("-")[1] + "/" + str.split("-")[2];
-    }
-  }
-  module.exports.getDailyDate = getDailyDate;
-</wxs>
 <view class="container">
   <view class='topView'>
-    <view class='location' bindtap='chooseLocation'>
+    <view class='location'>
       <view>
         <text>{{location}}</text>
       </view>
     </view>
+    <image class='nowImg' src='../img/{{nowCond_code}}.png' mode='aspectFill'></image>
     <view class='nowTemp'>{{nowTemperature}}</view>
     <view class='nowWind'>{{nowWind}}</view>
-    <view class='air_now'>{{nowAir}}</view>
+    <view class='air_now'>空气质量状况 {{nowAir}}</view>
   </view>
   <view class='dailyForecast'>
     <block wx:for="{{dailyForecast}}" wx:key="unique" style="display: block;">
@@ -26,33 +17,65 @@
         <view class='dailyDate'>{{item.date}}</view>
         <view class='dailyCond'>{{item.cond_txt_d}}</view>
         <view class='dailyTmp'>{{item.tmp_min}}℃~{{item.tmp_max}}℃</view>
+        <image class='dailyImg' src='../img/{{item.cond_code_d}}.png' mode='aspectFill'></image>
       </view>
     </block>
   </view>
-  <view class='lifeStyle' style="flex-direction:column;">
-    <view class='life'>舒适度指数：{{lifeStyle[0].brf}}
-      <view class="lifeText">{{lifeStyle[0].txt}}</view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>舒适指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[0].brf}} </view>
     </view>
-    <view class='life'>穿衣指数：{{lifeStyle[1].brf}}
-      <view class="lifeText">{{lifeStyle[1].txt}}</view>
-    </view>
-    <view class='life'>感冒指数：{{lifeStyle[2].brf}}
-      <view class="lifeText">{{lifeStyle[2].txt}}</view>
-    </view>
-    <view class='life'>运动指数：{{lifeStyle[3].brf}}
-      <view class="lifeText">{{lifeStyle[3].txt}}</view>
-    </view>
-    <view class='life'>旅游指数：{{lifeStyle[4].brf}}
-      <view class="lifeText">{{lifeStyle[4].txt}}</view>
-    </view>
-    <view class='life'>紫外线指数：{{lifeStyle[5].brf}}
-      <view class="lifeText">{{lifeStyle[5].txt}}</view>
-    </view>
-    <view class='life'>洗车指数：{{lifeStyle[6].brf}}
-      <view class="lifeText">{{lifeStyle[6].txt}}</view>
-    </view>
-    <view class='life'>空气污染扩散条件指数：{{lifeStyle[7].brf}}
-      <view class="lifeText">{{lifeStyle[7].txt}}</view>
-    </view>
+    <view class="lifeText">{{lifeStyle[0].txt}}</view>
   </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>穿衣指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[1].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[1].txt}}</view>
+  </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>感冒指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[2].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[2].txt}}</view>
+  </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>运动指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[3].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[3].txt}}</view>
+  </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>旅游指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[4].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[4].txt}}</view>
+  </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>紫外线指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[5].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[5].txt}}</view>
+  </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>洗车指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[6].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[6].txt}}</view>
+  </view>
+  <view class='lifeStyle' style="flex-direction:row;">
+    <view style="flex-direction:column; width:40%;">
+      <view class='lifeTitle'>污染指数</view>
+      <view class='lifeSecTitle'>{{lifeStyle[7].brf}}</view>
+    </view>
+    <view class="lifeText">{{lifeStyle[7].txt}}</view>
+  </view>
+  <view class='botton'>--数据来自<a href='https://www.heweather.com/'>和风天气</a>--</view>
 </view>

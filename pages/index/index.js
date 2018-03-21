@@ -12,25 +12,46 @@ Page({
     nowBackGround: [100, 8],
     nowTemperature: '0 ℃',
     nowWind: '晴/东北风  微风',
-    nowAir: '50  优',
+    nowAir: '51  优',
+    nowCond_code:100,
     hourlyArr: [],
     dailyForecast: [],
     lifeStyle: [],
   },
-  chooseLocation:function(){
+  chooseLocation: function () {
     //获得位置
     var mIndex = this;
     util.showBusy("加载中...")
     wx.getLocation({
       success: function (res) {
         mIndex.setData({ latitude: res.latitude, longitude: res.longitude })
-        console.log(res.latitude + "," + res.longitude)
+        console.log(res)
         mIndex.Weather(res.latitude, res.longitude)
-        util.showSuccess("加载成功")
-        wx.stopPullDownRefresh();
+        //util.showSuccess("加载成功");
+        mIndex.amapLocation(res.latitude, res.longitude)
+        //wx.stopPullDownRefresh();
       },
       fail: function () {
         util.showModel("加载失败")
+      }
+    })
+  },
+  amapLocation: function (latitude, longitude) {
+    var aMap = this;
+    var url = "https://restapi.amap.com/v3/geocode/regeo";
+    var data = {
+      key: "828a55e32d8fc01c7152bc62047c7115",
+      location: longitude ? longitude + "," + latitude : "116.98,36.67"
+    };
+    wx.request({
+      url: url,
+      method: "GET",
+      data: data,
+      success: function (res) {
+        aMap.setData({ location: res.data.regeocode.formatted_address });
+      },
+      fail: function (res) {
+        util.showModel("地址解析失败")
       }
     })
   },
@@ -46,6 +67,7 @@ Page({
     var mWeather = this;
     //数据集合
     var url = "https://free-api.heweather.com/s6/weather";
+    var airUrl = "https://free-api.heweather.com/s6/air";
     var data = {
       key: "f269590b97fa47c58973cc7c70199a07",
       location: location ? longitude + "," + latitude : "auto_ip"
@@ -54,10 +76,9 @@ Page({
       url: url,
       method: "GET",
       data: data,
-      success: function (res) {
-        util.showSuccess("加载成功")
+      success: function (res) {        
         console.log(res.data.HeWeather6[0])
-        mWeather.setData({ weather: JSON.stringify(res.data.HeWeather6[0])})
+        mWeather.setData({ weather: JSON.stringify(res.data.HeWeather6[0]) })
         var basic = res.data.HeWeather6[0].basic;
         var now = res.data.HeWeather6[0].now;
         var hourly = res.data.HeWeather6[0].hourly;
@@ -66,16 +87,33 @@ Page({
         mWeather.setData({
           nowBackGround: [now.cond_code, now.tmp],
           nowTemperature: now.tmp + "℃",
-          nowWind: now.cond_txt + "/" + now.wind_dir + "   " + now.wind_sc,
+          nowWind: now.cond_txt + "   " + now.wind_dir + "   " + now.wind_sc + "级",
           hourlyArr: hourly,
           dailyForecast: daily,
           lifeStyle: lift,
-          location: basic.location
+          nowCond_code:now.cond_code
         })
+        util.showSuccess("加载成功");
+        wx.stopPullDownRefresh();
       },
       fail: function (res) {
         util.showModel("加载失败")
       }
     });
+    wx.request({
+      url: airUrl,
+      method: "GET",
+      data: data,
+      success: function (res) {
+        console.log(res);
+        var nowAirCity = res.data.HeWeather6[0].air_now_city;
+        mWeather.setData({
+          nowAir: nowAirCity.aqi + "  " + nowAirCity.qlty,
+        })
+      },
+      fail:function(res){
+
+      }
+    })
   }
 })
