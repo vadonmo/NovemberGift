@@ -6,33 +6,41 @@ const app = getApp()
 Page({
   data: {
     weather: "",
-    latitude: "",
-    longitude: "",
+    latitude: "36.67",
+    longitude: "116.98",
     location: "济南",
     nowBackGround: [100, 8],
     nowTemperature: '0 ℃',
     nowWind: '晴/东北风  微风',
     nowAir: '51  优',
-    nowCond_code:100,
-    hourlyArr: [],
+    nowCond_code: 100,
     dailyForecast: [],
     lifeStyle: [],
+    isComplete: false
   },
   chooseLocation: function () {
     //获得位置
     var mIndex = this;
+    var latitude = "36.67", longitude = "116.98";
     util.showBusy("加载中...")
     wx.getLocation({
       success: function (res) {
         mIndex.setData({ latitude: res.latitude, longitude: res.longitude })
+        latitude = res.latitude;
+        longitude = res.longitude;
         console.log(res)
-        mIndex.Weather(res.latitude, res.longitude)
-        //util.showSuccess("加载成功");
-        mIndex.amapLocation(res.latitude, res.longitude)
-        //wx.stopPullDownRefresh();
       },
       fail: function () {
-        util.showModel("加载失败")
+        mIndex.setData({
+          latitude: "36.67",
+          longitude: "116.98"
+        })
+      },
+      complete: function () {
+        mIndex.Weather(latitude, longitude)
+        //util.showSuccess("加载成功");
+        mIndex.amapLocation(latitude, longitude)
+        //wx.stopPullDownRefresh();
       }
     })
   },
@@ -76,22 +84,21 @@ Page({
       url: url,
       method: "GET",
       data: data,
-      success: function (res) {        
+      success: function (res) {
         console.log(res.data.HeWeather6[0])
         mWeather.setData({ weather: JSON.stringify(res.data.HeWeather6[0]) })
         var basic = res.data.HeWeather6[0].basic;
         var now = res.data.HeWeather6[0].now;
-        var hourly = res.data.HeWeather6[0].hourly;
         var daily = res.data.HeWeather6[0].daily_forecast;
         var lift = res.data.HeWeather6[0].lifestyle;
         mWeather.setData({
           nowBackGround: [now.cond_code, now.tmp],
           nowTemperature: now.tmp + "℃",
           nowWind: now.cond_txt + "   " + now.wind_dir + "   " + now.wind_sc + "级",
-          hourlyArr: hourly,
           dailyForecast: daily,
           lifeStyle: lift,
-          nowCond_code:now.cond_code
+          nowCond_code: now.cond_code,
+          isComplete: true
         })
         util.showSuccess("加载成功");
         wx.stopPullDownRefresh();
@@ -111,7 +118,7 @@ Page({
           nowAir: nowAirCity.aqi + "  " + nowAirCity.qlty,
         })
       },
-      fail:function(res){
+      fail: function (res) {
 
       }
     })
