@@ -1,4 +1,15 @@
 <!--index.wxml-->
+<wxs module="foo">
+  var today = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+  var dayName = ['今天', '明天', '后天'];
+  var b = function getWeekByDay(dayValue, index) {
+    var dayIndex = getDate(dayValue).getDay();
+    return index < 3 ? dayName[index] : today[dayIndex];
+  }
+  module.exports = {
+    getWeekByDay: b
+  };
+</wxs>
 <view class="container">
   <view class='topView'>
     <view class='location'>
@@ -14,10 +25,10 @@
   <view class='dailyForecast'>
     <block wx:for="{{dailyForecast}}" wx:key="unique" style="display: block;">
       <view class='daily' style="flex-direction:row;">
-        <view class='dailyDate'>{{item.date}}</view>
-        <view class='dailyCond'>{{item.cond_txt_d}}</view>
-        <view class='dailyTmp'>{{item.tmp_min}}℃~{{item.tmp_max}}℃</view>
+        <view class='dailyDate'>{{foo.getWeekByDay(item.date,index)}}</view>
+        <!--<view class='dailyCond'>{{item.cond_txt_d}}</view>-->
         <image class='dailyImg' src='../img/{{item.cond_code_d}}.png' mode='aspectFill'></image>
+        <view class='dailyTmp'>{{item.tmp_min}}℃~{{item.tmp_max}}℃</view>
       </view>
     </block>
   </view>
